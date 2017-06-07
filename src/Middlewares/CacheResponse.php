@@ -1,44 +1,44 @@
 <?php
 
-namespace Spatie\ResponseCache\Middlewares;
+    namespace Spatie\ResponseCache\Middlewares;
 
-use Closure;
-use Illuminate\Http\Request;
-use Spatie\ResponseCache\ResponseCache;
-use Spatie\ResponseCache\Events\CacheMissed;
-use Symfony\Component\HttpFoundation\Response;
-use Spatie\ResponseCache\Events\ResponseCacheHit;
+    use Closure;
+    use Illuminate\Http\Request;
+    use Spatie\ResponseCache\ResponseCache;
+    use Spatie\ResponseCache\Events\CacheMissed;
+    use Symfony\Component\HttpFoundation\Response;
+    use Spatie\ResponseCache\Events\ResponseCacheHit;
 
-class CacheResponse
-{
-    /** @var \Spatie\ResponseCache\ResponseCache */
-    protected $responseCache;
-
-    public function __construct(ResponseCache $responseCache)
+    class CacheResponse
     {
-        $this->responseCache = $responseCache;
-    }
+        /** @var \Spatie\ResponseCache\ResponseCache */
+        protected $responseCache;
 
-    public function handle(Request $request, Closure $next): Response
-    {
-        if ($this->responseCache->enabled($request)) {
-            if ($this->responseCache->hasBeenCached($request)) {
-                event(new ResponseCacheHit($request));
-
-                return $this->responseCache->getCachedResponseFor($request);
-            }
+        public function __construct(ResponseCache $responseCache)
+        {
+            $this->responseCache = $responseCache;
         }
 
-        $response = $next($request);
+        public function handle(Request $request, Closure $next)
+        {
+            if ($this->responseCache->enabled($request)) {
+                if ($this->responseCache->hasBeenCached($request)) {
+                    event(new ResponseCacheHit($request));
 
-        if ($this->responseCache->enabled($request)) {
-            if ($this->responseCache->shouldCache($request, $response)) {
-                $this->responseCache->cacheResponse($request, $response);
+                    return $this->responseCache->getCachedResponseFor($request);
+                }
             }
+
+            $response = $next($request);
+
+            if ($this->responseCache->enabled($request)) {
+                if ($this->responseCache->shouldCache($request, $response)) {
+                    $this->responseCache->cacheResponse($request, $response);
+                }
+            }
+
+            event(new CacheMissed($request));
+
+            return $response;
         }
-
-        event(new CacheMissed($request));
-
-        return $response;
     }
-}

@@ -1,26 +1,26 @@
 <?php
 
-namespace Spatie\ResponseCache\Commands;
+    namespace Spatie\ResponseCache\Commands;
 
-use Illuminate\Console\Command;
-use Spatie\ResponseCache\ResponseCacheRepository;
-use Spatie\ResponseCache\Events\FlushedResponseCache;
-use Spatie\ResponseCache\Events\FlushingResponseCache;
+    use Illuminate\Console\Command;
+    use Spatie\ResponseCache\ResponseCacheRepository;
+    use Spatie\ResponseCache\Events\FlushedResponseCache;
+    use Spatie\ResponseCache\Events\FlushingResponseCache;
 
-class Flush extends Command
-{
-    protected $signature = 'responsecache:flush';
-
-    protected $description = 'Flush the response cache';
-
-    public function handle(ResponseCacheRepository $cache)
+    class Flush extends Command
     {
-        event(new FlushingResponseCache());
+        protected $signature = 'responsecache:flush';
 
-        $cache->flush();
+        protected $description = 'Flush the response cache';
 
-        event(new FlushedResponseCache());
+        public function handle(ResponseCacheRepository $cache)
+        {
+            event(new FlushingResponseCache());
 
-        $this->info('Response cache flushed!');
+            $cache->flush();
+
+            event(new FlushedResponseCache());
+
+            $this->info('Response cache flushed!');
+        }
     }
-}

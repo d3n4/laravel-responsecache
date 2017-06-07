@@ -1,24 +1,24 @@
 <?php
 
-namespace Spatie\ResponseCache;
+    namespace Spatie\ResponseCache;
 
-use Illuminate\Http\Request;
-use Spatie\ResponseCache\CacheProfiles\CacheProfile;
+    use Illuminate\Http\Request;
+    use Spatie\ResponseCache\CacheProfiles\CacheProfile;
 
-class RequestHasher
-{
-    /** @var \Spatie\ResponseCache\CacheProfiles\CacheProfile */
-    protected $cacheProfile;
-
-    public function __construct(CacheProfile $cacheProfile)
+    class RequestHasher
     {
-        $this->cacheProfile = $cacheProfile;
-    }
+        /** @var \Spatie\ResponseCache\CacheProfiles\CacheProfile */
+        protected $cacheProfile;
 
-    public function getHashFor(Request $request): string
-    {
-        return 'responsecache-'.md5(
-            "{$request->getUri()}/{$request->getMethod()}/".$this->cacheProfile->cacheNameSuffix($request)
-        );
+        public function __construct(CacheProfile $cacheProfile)
+        {
+            $this->cacheProfile = $cacheProfile;
+        }
+
+        public function getHashFor(Request $request)
+        {
+            return 'responsecache-' . md5(
+                    "{$request->getUri()}/{$request->getMethod()}/" . $this->cacheProfile->cacheNameSuffix($request)
+                );
+        }
     }
-}

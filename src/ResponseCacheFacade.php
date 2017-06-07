@@ -1,20 +1,20 @@
 <?php
 
-namespace Spatie\ResponseCache;
+    namespace Spatie\ResponseCache;
 
-use Illuminate\Support\Facades\Facade;
+    use Illuminate\Support\Facades\Facade;
 
-class ResponseCacheFacade extends Facade
-{
-    /**
-     * Get the registered name of the component.
-     *
-     * @see \Spatie\ResponseCache\ResponseCache
-     *
-     * @return string
-     */
-    protected static function getFacadeAccessor()
+    class ResponseCacheFacade extends Facade
     {
-        return 'responsecache';
+        /**
+         * Get the registered name of the component.
+         *
+         * @see \Spatie\ResponseCache\ResponseCache
+         *
+         * @return string
+         */
+        protected static function getFacadeAccessor()
+        {
+            return 'responsecache';
+        }
     }
-}

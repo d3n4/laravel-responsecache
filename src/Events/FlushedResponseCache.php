@@ -1,7 +1,7 @@
 <?php
 
-namespace Spatie\ResponseCache\Events;
+    namespace Spatie\ResponseCache\Events;
 
-class FlushedResponseCache
-{
-}
+    class FlushedResponseCache
+    {
+    }

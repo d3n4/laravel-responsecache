@@ -1,27 +1,27 @@
 <?php
 
-namespace Spatie\ResponseCache\CacheProfiles;
+    namespace Spatie\ResponseCache\CacheProfiles;
 
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+    use Illuminate\Http\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
-class CacheAllSuccessfulGetRequests extends BaseCacheProfile
-{
-    public function shouldCacheRequest(Request $request): bool
+    class CacheAllSuccessfulGetRequests extends BaseCacheProfile
     {
-        if ($request->ajax()) {
-            return false;
+        public function shouldCacheRequest(Request $request)
+        {
+            if ($request->ajax()) {
+                return false;
+            }
+
+            if ($this->isRunningInConsole()) {
+                return false;
+            }
+
+            return $request->isMethod('get');
         }
 
-        if ($this->isRunningInConsole()) {
-            return false;
+        public function shouldCacheResponse(Response $response)
+        {
+            return $response->isSuccessful() || $response->isRedirection();
         }
-
-        return $request->isMethod('get');
     }
-
-    public function shouldCacheResponse(Response $response): bool
-    {
-        return $response->isSuccessful() || $response->isRedirection();
-    }
-}
