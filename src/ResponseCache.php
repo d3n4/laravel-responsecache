@@ -60,7 +60,7 @@
         public function hasBeenCached(Request $request)
         {
             return config('responsecache.enabled')
-                ? $this->cache->has($this->hasher->getHashFor($request)) ;
+                ? $this->cache->has($this->hasher->getHashFor($request)) : false;
         }
 
         public function getCachedResponseFor(Request $request)
