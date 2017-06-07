@@ -15,7 +15,7 @@
             return serialize(compact('content', 'statusCode', 'headers'));
         }
 
-        public function unserialize(string $serializedResponse)
+        public function unserialize($serializedResponse)
         {
             $responseProperties = unserialize($serializedResponse);
 
